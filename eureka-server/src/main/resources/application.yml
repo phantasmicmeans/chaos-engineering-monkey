@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: eureka-server
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+##Hibernate ddl auto (create, create-drop, validate, update)
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/sw?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: sangmin
+    password: tkdals12
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+
+server:
+  port: 8081
