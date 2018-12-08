@@ -2,31 +2,8 @@ spring:
   application:
     name: eureka-server
 
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-
-##Hibernate ddl auto (create, create-drop, validate, update)
-    hibernate:
-      ddl-auto: update
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/sw?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    username: sangmin
-    password: tkdals12
-    driver-class-name: com.mysql.jdbc.Driver
-    hikari:
-      maximum-pool-size: 10
-
 server:
   port: 8081
-
-#The Eureka Server does not have a back end store, but the service instancse in the registry all have to send hearbeats
-#to keep their registrations up to date( so this can bo done in menmory)
-#Clients also have an in-memeory cache of Eureka registrations (so they do not have go to the registry for every request
-# to a service)
-
 #Standalone Mode - The combination of the two caches (client and server) and the hearbeats make a standalone Eurkea server fairly resilent to failure,
 # as long as there is some sort of monitor or elastic runtime keeping it alive.
 #In standalone mode, you might prefer to switch off the client side behavior so that it does not keep trying and failing to reach its peers...
@@ -38,3 +15,11 @@ eureka:
     fetch-registry: false #client can not fetch any resource from eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+#The Eureka Server does not have a back end store, but the service instancse in the registry all have to send hearbeats
+#to keep their registrations up to date( so this can bo done in menmory)
+#Clients also have an in-memory cache of Eureka registrations (so they do not have go to the registry for every request
+# to a service)
+
+#By default, every Eureka server is also a Eureka client and requires service URL to locate a peer
+
