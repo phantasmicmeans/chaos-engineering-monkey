@@ -1,6 +1,7 @@
 package dev.distributed.eureka.EurekClient;
 
 import com.netflix.discovery.DiscoveryClient;
+import com.netflix.discovery.EurekaClient;
 import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import com.sun.jersey.api.NotFoundException;
@@ -23,7 +24,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class ClientController {
 
     @Autowired
-    private DiscoveryClient discoveryClient;
+    private EurekaClient discoveryClient;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
