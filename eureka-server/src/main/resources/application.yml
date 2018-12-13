@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: debug
   application:
     name: eureka-server
 
@@ -17,7 +19,7 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 #The Eureka Server does not have a back end store, but the service instancse in the registry all have to send hearbeats
-#to keep their registrations up to date( so this can bo done in menmory)
+#to keep their registrations up to date( so this can bo done in memory)
 #Clients also have an in-memory cache of Eureka registrations (so they do not have go to the registry for every request
 # to a service)
 

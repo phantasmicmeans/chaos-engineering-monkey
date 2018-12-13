@@ -22,6 +22,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 @RequestMapping(value = "eureka/")
 public class ClientController {
 
+    @Autowired
     private DiscoveryClient discoveryClient;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -47,7 +48,7 @@ public class ClientController {
     }
 
     @RequestMapping(value = "regions/{regions}/clients/applications", method = GET)
-    public String getAppicationsForRegions(@Valid @PathVariable("regions") String regions){
+    public String getApplicationsForRegions(@Valid @PathVariable("regions") String regions){
 
         StringBuilder sb = new StringBuilder();
         Applications applications = discoveryClient.getApplicationsForARegion(regions);
