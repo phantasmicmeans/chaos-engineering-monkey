@@ -12,11 +12,15 @@ server:
 eureka:
   instance:
     hostname: localhost
+    health-check-url: /health
   client:
     register-with-eureka: false #client can not register to eureka server
     fetch-registry: false #client can not fetch any resource from eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    region: ap-northeast-2
+    availability-zones:
+      ap-northeaset-2: ap-northeast-2c
 
 #The Eureka Server does not have a back end store, but the service instancse in the registry all have to send hearbeats
 #to keep their registrations up to date( so this can bo done in memory)
