@@ -29,41 +29,41 @@ public class ClientController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "regions/clients", method = GET) //eureka server에 등록된 regions
-    public String getClientList(){
+    public String getClientList() {
 
         TreeSet<String> regions = new TreeSet<>(discoveryClient.getAllKnownRegions());
         StringBuilder sb = new StringBuilder();
 
-        if(checkEmpty(regions)) throw new NotFoundException("No Regions");
+        if (checkEmpty(regions)) throw new NotFoundException("No Regions");
         regions.forEach(sb::append);
         return sb.toString();
     }
 
     @RequestMapping(value = "clients/applications/{applicationName}", method = GET)
-    public String getApplications(@Valid @PathVariable("applicationName") String applicationName){
+    public String getApplications(@Valid @PathVariable("applicationName") String applicationName) {
 
-        if(checkPathVariable(applicationName)) throw new ValidationException("Please Check your applicationName");
+        if (checkPathVariable(applicationName)) throw new ValidationException("Please Check your applicationName");
 
         Application application = discoveryClient.getApplication(applicationName);
-        return application.getName().isEmpty()? "cannot found application" : application.getName();
+        return application.getName().isEmpty() ? "cannot found application" : application.getName();
     }
 
     @RequestMapping(value = "regions/{regions}/clients/applications", method = GET)
-    public String getApplicationsForRegions(@Valid @PathVariable("regions") String regions){
+    public String getApplicationsForRegions(@Valid @PathVariable("regions") String regions) {
 
         StringBuilder sb = new StringBuilder();
         Applications applications = discoveryClient.getApplicationsForARegion(regions);
-        if(applications.size()==0) return "cannot found applications for region : " + regions;
+        if (applications.size() == 0) return "cannot found applications for region : " + regions;
         applications.getRegisteredApplications().forEach(sb::append);
 
         return sb.toString();
     }
 
-    private boolean checkEmpty(Set regions){
+    private boolean checkEmpty(Set regions) {
         return regions.isEmpty();
     }
 
-    private boolean checkPathVariable(String str){
+    private boolean checkPathVariable(String str) {
         return (str.isEmpty() || str.length() < 3);
     }
 

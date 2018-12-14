@@ -16,13 +16,14 @@ public class EurekaApplication {
 
     @Value("${server.port}")
     private int port;
+
     public static void main(String[] args) {
         SpringApplication.run(EurekaApplication.class, args);
     }
 
     @Bean
     @Profile("develop")
-    public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils){
+    public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils) {
         EurekaInstanceConfigBean b = new EurekaInstanceConfigBean(inetUtils);
         AmazonInfo info = AmazonInfo.Builder.newBuilder().autoBuild("eureka");
         b.setHostname(info.get(AmazonInfo.MetaDataKey.publicHostname));
