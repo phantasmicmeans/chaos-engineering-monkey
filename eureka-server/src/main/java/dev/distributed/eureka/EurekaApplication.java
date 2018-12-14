@@ -21,7 +21,7 @@ public class EurekaApplication {
     }
 
     @Bean
-    @Profile("debug")
+    @Profile("develop")
     public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils){
         EurekaInstanceConfigBean b = new EurekaInstanceConfigBean(inetUtils);
         AmazonInfo info = AmazonInfo.Builder.newBuilder().autoBuild("eureka");
