@@ -20,7 +20,7 @@ public class EurekaInstance {
         this.eurekaInstances.forEach((instance) -> sb.append(simpleToString(instance)));
         return sb;
     }
-    public StringBuilder InstanceInfo(){
+    public StringBuilder InstancesInfo(){
         sb= new StringBuilder();
         this.eurekaInstances.forEach((instance) -> sb.append(toString(instance)));
         return sb;
