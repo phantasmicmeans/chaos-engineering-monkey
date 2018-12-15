@@ -16,7 +16,7 @@ public class SwaggerConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sw.project.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.distributed.subproblem"))
                 .paths(PathSelectors.any()) //위 패키지에 swagger를 적용한다.
                 .build();
 
