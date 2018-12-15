@@ -1,0 +1,118 @@
+spring:
+  application:
+    name: subproblem-client
+  profiles:
+    active: debug
+
+  #datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/sw?serverTimezone=UTC
+    username: root
+    password: tkdals12
+    #driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maximum-pool-size: 10
+  #JPA
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    #show-sql: true #this is the simplest way to dump the queries
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true #jpa.properties.hibernate.format_sql = true <- th beautify or pretty print hte SQL
+
+#Fegin
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+  hystrix:
+    enabled: true
+    command:
+      default:
+        execution:
+          isolation:
+            strategy: THREAD
+#Eureka
+eureka:
+  instance:
+    hostname: localhost
+    lease-renewal-interval-in-seconds: 10
+    metadata-map:
+      instanceId: ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8081/eureka/
+      preferSameZoneEureka: true
+#server
+server:
+  port:
+    8078
+
+---
+spring:
+  application:
+    name: Feign-Client
+  profiles: develop
+
+    #datasource
+  datasource:
+    url: jdbc:mysql://localhost:3306/sw?serverTimezone=UTC
+    username: root
+    password: tkdals12
+    hikari:
+      maximum-pool-size: 10
+  #JPA
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    #show-sql: true #this is the simplest way to dump the queries
+    properties:
+      hibernate:
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true #jpa.properties.hibernate.format_sql = true <- th beautify or pretty print hte SQL
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+  hystrix:
+    enabled: true
+    command:
+      default:
+        execution:
+          isolation:
+            strategy: THREAD
+
+eureka:
+  instance:
+    hostname: ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com
+    lease-renewal-interval-in-seconds: 10
+    metadata-map:
+      instanceId: ${spring.application.name}:${server.port}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    healthcheck:
+      enabled: true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:8081/eureka/
+      preferSameZoneEureka: true
+
+server:
+  port:
+    8080
