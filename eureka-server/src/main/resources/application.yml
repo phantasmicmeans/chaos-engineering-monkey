@@ -14,8 +14,7 @@ eureka:
     hostname: localhost
     health-check-url: /health
   client:
-    register-with-eureka: false #client can not register to eureka server
-    fetch-registry: false #client can not fetch any resource from eureka server
+    register-with-eureka: true #client can not register to eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
     #region: ap-northeast-2
@@ -46,8 +45,7 @@ eureka:
     hostname: localhost
     health-check-url: /health
   client:
-    register-with-eureka: false #client can not register to eureka server
-    fetch-registry: false #client can not fetch any resource from eureka server
+    register-with-eureka: true #client can not register to eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
     region: ap-northeast-2
