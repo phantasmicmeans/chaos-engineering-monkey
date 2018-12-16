@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -17,9 +18,11 @@ public class subProblem {
     @Id @GeneratedValue
     private Long id;
 
+    @NotEmpty
     @Column(nullable = false)
     private String code;
 
+    @NotEmpty
     @Column(nullable = false)
     private String content;
 
@@ -27,4 +30,9 @@ public class subProblem {
 
     private LocalDateTime createdTimeAt = LocalDateTime.now();
     private LocalDate createdDateAt = LocalDate.now();
+
+    public subProblem(String code, String content){
+        this.code = code;
+        this.content = content;
+    }
 }
