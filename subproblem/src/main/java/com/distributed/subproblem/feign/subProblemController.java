@@ -3,11 +3,14 @@ package com.distributed.subproblem.feign;
 import com.distributed.subproblem.domain.subProblem;
 import com.distributed.subproblem.exception.DataInvalidException;
 import com.distributed.subproblem.exception.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -18,14 +21,16 @@ public class subProblemController implements subProblemClient{
     @Autowired
     private subProblemService subProblemService;
 
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public ResponseEntity getSubProblemById(Long id) {
 
         checkIsEmpty(id);
-        Optional<subProblem> subProblem = subProblemService.loadSubProblemById(id);
-        subProblem.orElseThrow(() -> new ResourceNotFoundException("cannot found sub-problems with that id"));
+        subProblem subProblem = subProblemService.loadSubProblemById(id)
+                            .orElseThrow(() -> new ResourceNotFoundException("cannot found sub-problems with that id"));
 
-        return ResponseEntity.ok(subProblem.get());
+        return ResponseEntity.ok(subProblem);
     }
 
     @Override
@@ -46,13 +51,15 @@ public class subProblemController implements subProblemClient{
     }
 
     @Override
-    public ResponseEntity saveSubProblemByCode(subProblem subProblem) throws ClassCastException{
+    public ResponseEntity saveSubProblemByCode(@Valid subProblem subProblem) throws ClassCastException{
 
-        checkIsEmpty(subProblem);
+        if(!checkIsEmpty(subProblem)) { throw new DataInvalidException("please check your data"); }
+
         Optional<Object> object = Optional.ofNullable(subProblemService.saveSubProblem(subProblem));
         String error;
 
-        if(object.getClass().equals(subProblem.getClass())){ //save 성공시 확인 uri 함께
+        Object retObject = object.get();
+        if(retObject.getClass().equals(subProblem.getClass())){ //save, redirect get uri 함께
             URI location = ServletUriComponentsBuilder.fromCurrentServletMapping().path("api/v1/sub-problem/{id}")
                             .build().expand(subProblem.getId()).toUri();
 
@@ -66,17 +73,20 @@ public class subProblemController implements subProblemClient{
 
     public boolean checkIsEmpty(Object object){
 
-        if(object.getClass().equals(String.class)) { //URI - null, length check
-            String code = (String) Optional.ofNullable(object).orElseThrow(() -> new DataInvalidException("please check your {code} in uri or json data"));
+        if(object.getClass().equals(String.class)) { //code - null, length check
+            String code = (String) Optional.ofNullable(object).orElseThrow(()
+                                -> new DataInvalidException("please check your {code} in uri or json data"));
             return code.length() == 6;
 
-        }else if(object.getClass().equals(Long.class)){ //URI - null check
-            Long Id = (Long) Optional.ofNullable(object).orElseThrow(() -> new DataInvalidException("please check your {id} in uri or json data"));
+        }else if(object.getClass().equals(Long.class)){ //id - null check
+            Long Id = (Long) Optional.ofNullable(object).orElseThrow(()
+                                -> new DataInvalidException("please check your {id} in uri or json data"));
             return true;
 
         }else if(object.getClass().equals(subProblem.class)){ //POST data
-            subProblem subProblem = (subProblem) Optional.ofNullable(object).orElseThrow(() -> new NullPointerException("please check your json(post) data"));
-            return checkIsEmpty(subProblem.getCode()) && checkIsEmpty(subProblem.getContent().length());
+            subProblem subProblem = (subProblem) Optional.ofNullable(object).orElseThrow(()
+                                -> new DataInvalidException("please check your json(post) data"));
+            return checkIsEmpty(subProblem.getCode()) && !subProblem.getContent().isEmpty();
         }
         return false;
     }
