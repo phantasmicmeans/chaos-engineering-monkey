@@ -1,6 +1,8 @@
 package com.distributed.subproblem.repository;
 
 import com.distributed.subproblem.domain.subProblem;
+import com.distributed.subproblem.exception.ResourceNotFoundException;
+import javassist.NotFoundException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -49,13 +51,13 @@ public class subProblemRepositoryTests {
     }
 
     @Test
-    public void findByCodeOrderByIdAsc() {
-
+    public void findById(){
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDate localDate = LocalDate.now();
 
         subProblem problem = subProblem.builder()
-                .code("abcde")
+                .id(1L)
+                .code("abcdef")
                 .content("hello word")
                 .count(0)
                 .createdTimeAt(localDateTime)
@@ -64,7 +66,27 @@ public class subProblemRepositoryTests {
 
         this.subProblemService.saveSubProblem(problem);
 
-        List<subProblem> list = this.subProblemService.loadSubProblemByCode("abcde");
+        subProblem problemLoad = this.subProblemService.loadSubProblemById(1L)
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+        assertThat(problemLoad).isEqualTo(problem);
+    }
+    @Test
+    public void findByCodeOrderByIdAsc() {
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDate localDate = LocalDate.now();
+
+        subProblem problem = subProblem.builder()
+                .code("abcdeg")
+                .content("hello word")
+                .count(0)
+                .createdTimeAt(localDateTime)
+                .createdDateAt(localDate)
+                .build();
+
+        this.subProblemService.saveSubProblem(problem);
+
+        List<subProblem> list = this.subProblemService.loadSubProblemByCode("abcdeg");
         assertThat(!list.isEmpty()).isTrue();
         assertThat(list.size()).isEqualTo(1);
 
