@@ -77,14 +77,13 @@ public class subProblemControllerTests {
 
         this.mockMvc.perform(get("/api/v1/sub-problem/{id}",1))
                 .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("code").exists())
                 .andExpect(jsonPath("content").exists())
                 .andExpect(jsonPath("count").exists())
                 .andExpect(jsonPath("createdTimeAt").exists())
-                .andExpect(jsonPath("createdDateAt").exists())
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("createdDateAt").exists());
     }
 
     @Test
