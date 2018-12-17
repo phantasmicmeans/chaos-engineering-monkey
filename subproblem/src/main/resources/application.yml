@@ -42,7 +42,7 @@ feign:
 eureka:
   instance:
     hostname: localhost
-    lease-renewal-interval-in-seconds: 10
+    lease-renewal-interval-in-seconds: 30 #20초마다 eureka 로 부터 정보 갱신
     metadata-map:
       instanceId: ${spring.application.name}:${server.port}
     instance-id: ${spring.application.name}:${server.port}
@@ -104,6 +104,7 @@ eureka:
     lease-renewal-interval-in-seconds: 10
     metadata-map:
       instanceId: ${spring.application.name}:${server.port}
+    instance-id: ${spring.application.name}:${server.port}:${random.value}
   client:
     register-with-eureka: true
     fetch-registry: true
