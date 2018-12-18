@@ -65,7 +65,7 @@ spring:
 
   #datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/sw?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/distribute?serverTimezone=UTC
     username: root
     password: tkdals12
     hikari:
