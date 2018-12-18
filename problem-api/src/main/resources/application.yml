@@ -111,7 +111,9 @@ eureka:
       enabled: true
     service-url:
       defaultZone: http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka, http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
-      preferSameZoneEureka: true
+    region: ap-northeast-2
+    availability-zones:
+      ap-northeast-2: ap-northeast-2a, ap-northeast-2c
 
 server:
   port:
