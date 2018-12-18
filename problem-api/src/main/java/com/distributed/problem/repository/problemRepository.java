@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface problemRepository extends JpaRepository <Problem, Integer> {
 //
-//    Collection<Problem> findAllByCode(); //code로  찾기
-//    Optional<Problem> findByIdAndCode(); //code, id 로 찾기
+    Collection<Problem> findAllByCode(String code); //code로  찾기
+    Optional<Problem> findByIdAndCode(); //code, id 로 찾기
 
 }

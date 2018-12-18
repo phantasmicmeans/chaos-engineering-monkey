@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(value = "eureka-client-problem")
+//@FeignClient(value = "eureka-client-problem", url = "http://localhost:8079")
 public interface ClientEureka {
 
     @GetMapping(value = "/eureka/actuator/info")
