@@ -90,6 +90,7 @@ public class ProblemController {
         if(subProblems.isEmpty()) throw new DataInvalidException("please check your sub-problem data"); //check
 
         ResponseEntity<String> responseEntity = this.subProblemClient.saveSubProblemsByCode(subProblems);
+        logger.info("response from subproblem : " + objectMapper.writeValueAsString(responseEntity.getHeaders()));
         logger.info("response from subproblem : " + objectMapper.writeValueAsString(responseEntity.getBody()));
 
         problemDTO retDTO;

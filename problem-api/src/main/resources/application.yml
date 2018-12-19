@@ -62,7 +62,6 @@ spring:
   profiles: ap-northeast-2a
 eureka:
   instance:
-    hostname:
     lease-renewal-interval-in-seconds: 10
     instance-id: ${spring.application.name}:${server.port}:${random.value}
     metadata-map:
@@ -77,14 +76,14 @@ eureka:
     service-url:
       ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
       ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      defaultZone: ap-northeast-2a, ap-northeast-2c
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
     prefer-same-zone-eureka: false
 ---
 
 spring:
-  profiles:
-    active: ap-northeast-2c
+  profiles: ap-northeast-2c
 
 eureka:
   instance:
@@ -102,6 +101,7 @@ eureka:
     service-url:
       ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
       ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      defaultZone: ap-northeast-2a, ap-northeast-2c
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
     prefer-same-zone-eureka: false
