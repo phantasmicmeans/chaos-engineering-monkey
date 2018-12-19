@@ -2,9 +2,7 @@ package com.distributed.problem.eureka;
 
 import com.distributed.problem.exception.DataInvalidException;
 import com.distributed.problem.exception.ResourceNotFoundException;
-import com.netflix.discovery.DiscoveryClient;
 import com.netflix.discovery.EurekaClient;
-import com.netflix.discovery.converters.Auto;
 import com.netflix.discovery.shared.Application;
 import com.netflix.discovery.shared.Applications;
 import org.springframework.beans.factory.annotation.Autowired;
