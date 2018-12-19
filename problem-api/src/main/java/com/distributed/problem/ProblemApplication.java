@@ -27,7 +27,7 @@ public class ProblemApplication {
     }
 
     @Bean
-    @Profile("develop")
+    @Profile({"ap-northeast-2a","ap-northeast-2c"})
     public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils){
         EurekaInstanceConfigBean b = new EurekaInstanceConfigBean(inetUtils);
         AmazonInfo info = AmazonInfo.Builder.newBuilder().autoBuild("eureka");
