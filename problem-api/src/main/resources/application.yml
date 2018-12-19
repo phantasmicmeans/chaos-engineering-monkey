@@ -4,6 +4,7 @@ spring:
   #datasource
   datasource:
     url: jdbc:mysql://aws-db.ccl5zra2roek.ap-northeast-2.rds.amazonaws.com/sw?serverTimezone=UTC
+    #url: jdbc:mysql://localhost/sw?serverTimezone=UTC
     username: root
     password: tkdals12
     #driver-class-name: com.mysql.jdbc.Driver
