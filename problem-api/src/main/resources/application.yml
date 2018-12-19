@@ -55,7 +55,7 @@ eureka:
 #server
 server:
   port:
-    8078
+    8080
 
 ---
 spring:
