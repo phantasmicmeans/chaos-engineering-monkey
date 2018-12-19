@@ -3,7 +3,8 @@ spring:
     name: Feign-Problem-Client
   #datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/distribute?serverTimezone=UTC
+    url: jdbc:mysql://aws-db.ccl5zra2roek.ap-northeast-2.rds.amazonaws.com/sw?serverTimezone=UTC
+    #url: jdbc:mysql://localhost/sw?serverTimezone=UTC
     username: root
     password: tkdals12
     #driver-class-name: com.mysql.jdbc.Driver
@@ -35,10 +36,17 @@ feign:
         execution:
           isolation:
             strategy: THREAD
+#server
+server:
+  port:
+    8080
+
+---
+spring:
+  profiles: debug
 #Eureka
 eureka:
   instance:
-    hostname: localhost
     lease-renewal-interval-in-seconds: 30 #20초마다 eureka 로 부터 정보 갱신
     metadata-map:
       instanceId: ${spring.application.name}:${server.port}
@@ -49,10 +57,6 @@ eureka:
     service-url:
       defaultZone: http://${eureka.instance.hostname}:8081/eureka/
       preferSameZoneEureka: true
-#server
-server:
-  port:
-    8080
 
 ---
 spring:
@@ -73,14 +77,14 @@ eureka:
     service-url:
       ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
       ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      defaultZone: http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka, http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
-    prefer-same-zone-eureka: true
+    prefer-same-zone-eureka: false
 ---
 
 spring:
-  profiles:
-    active: ap-northeast-2c
+  profiles: ap-northeast-2c
 
 eureka:
   instance:
@@ -98,6 +102,7 @@ eureka:
     service-url:
       ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
       ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      defaultZone: http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka, http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
-    prefer-same-zone-eureka: true
+    prefer-same-zone-eureka: false

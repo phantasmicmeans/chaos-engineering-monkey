@@ -42,7 +42,7 @@ public class ProblemController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @GetMapping(value = "/api/v1/problems/{code}/info", produces = "application/json")
+    @GetMapping(value = "v1/problem/list/{code}/info", produces = "application/json")
     @ApiOperation(value = "code가 일치하는 problem 리스트 조회" , produces =  "http")
     public ResponseEntity getProblemsByCode(@PathVariable String code) throws Exception{ //code로 찾기
 
@@ -62,13 +62,13 @@ public class ProblemController {
 
     }
 
-    @GetMapping(value = "/api/v1/problem/{code}/info/{hash_code}")
+    @GetMapping(value = "v1/problem/{code}/info/{hash_code}")
     @ApiOperation(value = "code와 hash_code가 일치하는 problem 조회 ", protocols = "http")
     public ResponseEntity getProblemByCodeAndId(String code, String hash_code) { //code, id
         return null;
     }
 
-    @PostMapping(value = "/api/v1/problem", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "v1/problem", consumes = "application/json", produces = "application/json")
     @Headers("Content-Type: application/json")
     @ApiOperation(value = "problem 생성" , protocols = "http")
     public ResponseEntity createProblemWithCode(@RequestBody  problemDTO problemDto) throws Exception{ //post
@@ -90,6 +90,7 @@ public class ProblemController {
         if(subProblems.isEmpty()) throw new DataInvalidException("please check your sub-problem data"); //check
 
         ResponseEntity<String> responseEntity = this.subProblemClient.saveSubProblemsByCode(subProblems);
+        logger.info("response from subproblem : " + objectMapper.writeValueAsString(responseEntity.getHeaders()));
         logger.info("response from subproblem : " + objectMapper.writeValueAsString(responseEntity.getBody()));
 
         problemDTO retDTO;
@@ -111,7 +112,7 @@ public class ProblemController {
         return ResponseEntity.status(500).body(objectMapper.writeValueAsString(error)); //json exception
     }
 
-    @DeleteMapping(value = "/api/v1/problem/{code}", produces = "application/json")
+    @DeleteMapping(value = "v1/problem/{code}", produces = "application/json")
     @ApiOperation(value = "delete problem with code", protocols = "http")
     public ResponseEntity deleteProblemWithCode(String code) { //delete
         return null;
