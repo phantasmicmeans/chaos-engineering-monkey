@@ -4,6 +4,8 @@ import feign.hystrix.FallbackFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class subProblemFallback implements FallbackFactory<subProblemClient> {
     @Override
@@ -26,6 +28,11 @@ public class subProblemFallback implements FallbackFactory<subProblemClient> {
 
             @Override
             public ResponseEntity saveSubProblemByCode(subProblem subProblem) {
+                return null;
+            }
+
+            @Override
+            public ResponseEntity<String> saveSubProblemsByCode(List<subProblem> subProblemList) {
                 return null;
             }
         };
