@@ -114,6 +114,7 @@ eureka:
     region: ap-northeast-2
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
+    prefer-same-zone-eureka: false
 
 server:
   port:
