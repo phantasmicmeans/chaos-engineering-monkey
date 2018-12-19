@@ -55,7 +55,7 @@ eureka:
 #server
 server:
   port:
-    8078
+    8080
 
 ---
 spring:
@@ -65,7 +65,7 @@ spring:
 
   #datasource
   datasource:
-    url: jdbc:mysql://localhost:3306/sw?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/distribute?serverTimezone=UTC
     username: root
     password: tkdals12
     hikari:
@@ -98,7 +98,7 @@ feign:
 
 eureka:
   instance:
-    hostname: ec2-54-180-158-222.ap-northeast-2.compute.amazonaws.com,
+    #hostname: ec2-54-180-158-222.ap-northeast-2.compute.amazonaws.com,
     # 2c = ec2-13-209-4-41.ap-northeast-2.compute.amazonaws.com
     lease-renewal-interval-in-seconds: 10
     metadata-map:
@@ -111,7 +111,9 @@ eureka:
       enabled: true
     service-url:
       defaultZone: http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka, http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
-      preferSameZoneEureka: true
+    region: ap-northeast-2
+    availability-zones:
+      ap-northeast-2: ap-northeast-2a, ap-northeast-2c
 
 server:
   port:
