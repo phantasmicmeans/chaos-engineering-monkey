@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "subproblem-client", fallbackFactory = subProblemFallback.class)
+@FeignClient(name = "SUB-PROBLEM", fallbackFactory = subProblemFallback.class)
 public interface subProblemClient {
 
     @GetMapping(value = "api/v1/sub-problem/{id}", produces = {"application/json"})
