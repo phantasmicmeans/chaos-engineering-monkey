@@ -3,10 +3,10 @@ spring:
     name: Feign-Problem-Client
   #datasource
   datasource:
-    url: jdbc:mysql://aws-db.ccl5zra2roek.ap-northeast-2.rds.amazonaws.com/sw?serverTimezone=UTC
+    url: jdbc:mysql://{your-rds-url}/sw?serverTimezone=UTC
     #url: jdbc:mysql://localhost/sw?serverTimezone=UTC
-    username: root
-    password: tkdals12
+    username: {id}
+    password: {password}
     #driver-class-name: com.mysql.jdbc.Driver
     hikari:
       maximum-pool-size: 10
@@ -75,9 +75,9 @@ eureka:
       enabled: true
     region: ap-northeast-2
     service-url:
-      ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
-      ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
-      defaultZone: http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka, http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      ap-northeast-2a:  http://{eureka-url-2a-url}:8081/eureka
+      ap-northeast-2c:  http://{eureke-regions-2c-url}:8082/eureka
+      defaultZone: http://{eureka-url-2a-url}:8081/eureka, http://{eureke-regions-2c-url}:8082/eureka
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
     prefer-same-zone-eureka: false
@@ -100,9 +100,9 @@ eureka:
       enabled: true
     region: ap-northeast-2
     service-url:
-      ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
-      ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
-      defaultZone: http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka, http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      ap-northeast-2a:  http://{eureka-url-2a-url}:8081/eureka
+      ap-northeast-2c:  http://{eureke-regions-2c-url}:8082/eureka
+      defaultZone: http://{eureka-url-2a-url}:8081/eureka, http://{eureke-regions-2c-url}:8082/eureka
     availability-zones:
       ap-northeast-2: ap-northeast-2a, ap-northeast-2c
     prefer-same-zone-eureka: false

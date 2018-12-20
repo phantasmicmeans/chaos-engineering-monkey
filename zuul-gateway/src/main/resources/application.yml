@@ -51,9 +51,9 @@ eureka:
       enabled: true
     region: ap-northeast-2
     service-url:
-      ap-northeast-2a:  http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka
-      ap-northeast-2c:  http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
-      defaultZone: http://ec2-13-209-133-18.ap-northeast-2.compute.amazonaws.com:8081/eureka, http://ec2-52-78-136-204.ap-northeast-2.compute.amazonaws.com:8082/eureka
+      ap-northeast-2a:  http://{eureka-url-2a-url}:8081/eureka
+      ap-northeast-2c:  http://{eureke-regions-2c-url}:8082/eureka
+      defaultZone: http://{eureka-url-2a-url}:8081/eureka, http://{eureke-regions-2c-url}:8082/eureka
     prefer-same-zone-eureka: false
 
 server:
