@@ -12,11 +12,15 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter @EqualsAndHashCode(of = "id")
-@Builder @NoArgsConstructor @AllArgsConstructor
+@Builder @NoArgsConstructor @AllArgsConstructor @ToString
 public class subProblem {
 
     @Id @GeneratedValue
-    private Long id;
+    private Integer id;
+
+    @NotEmpty
+    @Column(nullable = false)
+    private String pro_hash;
 
     @NotEmpty
     @Column(nullable = false)

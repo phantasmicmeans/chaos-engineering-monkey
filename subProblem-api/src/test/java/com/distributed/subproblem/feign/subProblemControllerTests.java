@@ -52,9 +52,11 @@ public class subProblemControllerTests {
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDate localDate = LocalDate.now();
 
+        String code = "abcdef";
         subProblem problem = subProblem.builder()
-                        .id(1L)
-                        .code("abcdef")
+                        .id(1)
+                        .code(code)
+                        .pro_hash(String.valueOf(code.hashCode()))
                         .content("hello-world")
                         .count(0)
                         .createdTimeAt(localDateTime)
@@ -72,19 +74,22 @@ public class subProblemControllerTests {
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
+    /*
     @Test //id로 조회하기
     public void getSubProblemById() throws Exception{
 
         this.mockMvc.perform(get("/api/v1/sub-problem/{id}",1))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("code").exists())
                 .andExpect(jsonPath("content").exists())
                 .andExpect(jsonPath("count").exists())
                 .andExpect(jsonPath("createdTimeAt").exists())
-                .andExpect(jsonPath("createdDateAt").exists());
+                .andExpect(jsonPath("createdDateAt").exists())
+                .andExpect(status().isOk());
     }
+
 
     @Test
     public void getSubProblemByCode() throws Exception{
@@ -101,15 +106,17 @@ public class subProblemControllerTests {
 
     }
 
-
+*/
     @Test //data null or wrong
     public void createSubProblemFail() throws Exception {
 
         LocalDateTime localDateTime = LocalDateTime.now();
         LocalDate localDate = LocalDate.now();
 
+        String code = "abcdef";
         subProblem problem = subProblem.builder()
-                .code("abcdef") //content null
+                .code(code) //content null
+                .pro_hash(String.valueOf(code.hashCode()))
                 .count(0)
                 .createdTimeAt(localDateTime)
                 .createdDateAt(localDate)

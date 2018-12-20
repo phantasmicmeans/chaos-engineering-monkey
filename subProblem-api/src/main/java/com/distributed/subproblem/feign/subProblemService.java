@@ -16,12 +16,12 @@ public class subProblemService {
     @Autowired
     subProblemRepository subProblemRepository;
 
-    public Optional<subProblem> loadSubProblemById(Long Id){
+    public Optional<subProblem> loadSubProblemById(Integer Id){
         return subProblemRepository.findById(Id);
     }
 
     public List<subProblem> loadSubProblemByCode(String code) {
-        List<subProblem> subProblems = subProblemRepository.findByCodeOrderByIdAsc(code);
+        List<subProblem> subProblems = subProblemRepository.findByCodeOrderByCode(code);
         return !subProblems.isEmpty() ? subProblems : new ArrayList<>();
     }
 
@@ -29,8 +29,16 @@ public class subProblemService {
         try {
             subProblemRepository.save(subProblem);
             return subProblem;
-        }catch(Exception e){
-            return e.toString();
+        }catch(Throwable e){
+            return e.getCause().toString();
+        }
+    }
+
+    public Object saveSubProblems(List<subProblem> subProblems){
+        try{
+            return this.subProblemRepository.saveAll(subProblems);
+        }catch(Throwable e){
+            return e.getCause().toString();
         }
     }
 

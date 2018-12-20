@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface subProblemRepository extends JpaRepository <subProblem, Long> {
-
-    List<subProblem> findByCodeOrderByIdAsc(final String code);
-
+public interface subProblemRepository extends JpaRepository <subProblem, Integer> {
+    List<subProblem> findByCodeOrderByCode(final String code);
 }
