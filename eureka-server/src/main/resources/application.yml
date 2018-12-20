@@ -13,9 +13,9 @@ eureka:
   instance:
     hostname: localhost
     health-check-url: /health
+
   client:
-    register-with-eureka: false #client can not register to eureka server
-    fetch-registry: false #client can not fetch any resource from eureka server
+    register-with-eureka: false #client can register to eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
     #region: ap-northeast-2
@@ -32,7 +32,6 @@ eureka:
 ---
 spring:
   profiles:
-    active: develop
   application:
     name: eureka-server
 
@@ -47,9 +46,35 @@ eureka:
     health-check-url: /health
   client:
     register-with-eureka: false #client can not register to eureka server
-    fetch-registry: false #client can not fetch any resource from eureka server
     service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
     region: ap-northeast-2
     availability-zones:
-      ap-northeaset-2: ap-northeast-2c
+      ap-northeast-2: ap-northeast-2a, ap-northeast-2c
+    prefer-same-zone-eureka: true
+
+
+## -----------------------
+## AWS deployment examples
+##------------------------
+
+# for AWS deployments, availability zones can be specified to take advantage of eureka client zone affinity by
+# specifying the following configurations.
+# for example, if the deployment is in us-east-1 and the available zones are us-east-1a, us-east-1b and us-east-1c,
+
+# define the region
+#eureka.region=us-east-1
+
+# notice that the region is specified as part of the config name
+#eureka.us-east-1.availabilityZones=us-east-1a,us-east-1b,us-east-1c
+
+# "eurekaServerPort" is whatever port your eureka servers are configured with
+#eureka.serviceUrl.us-east-1a=http://eurekaServerHostName:eurekaServerPort/eureka/v2
+#eureka.serviceUrl.us-east-1b=http://eurekaServerHostName:eurekaServerPort/eureka/v2
+#eureka.serviceUrl.us-east-1c=http://eurekaServerHostName:eurekaServerPort/eureka/v2
+
+# If shouldUseDns is set to true, the below is an example of how to configure eureka client to route to eureka servers,
+# assuming for example your DNS records are setup thus:
+# txt record: txt.mycompany.eureka.mydomain.com => "server1address" "server2address" "server3address"
+#eureka.shouldUseDns=true
+#eureka.eurekaServer.domainName=mydomain.com

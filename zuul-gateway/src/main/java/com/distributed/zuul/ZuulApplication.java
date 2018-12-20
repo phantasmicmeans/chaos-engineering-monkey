@@ -1,4 +1,4 @@
-package dev.distributed.eureka;
+package com.distributed.zuul;
 
 import com.netflix.appinfo.AmazonInfo;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,27 +7,28 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.commons.util.InetUtils;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 
-@SpringBootApplication
-@EnableEurekaServer
 @EnableEurekaClient
-public class EurekaApplication {
+@EnableHystrixDashboard
+@EnableZuulProxy
+@SpringBootApplication
+public class ZuulApplication {
+//By default Zuul routes all Cross Origin requests (CORS) to the services.
 
     @Value("${server.port}")
     private int port;
 
     public static void main(String[] args) {
-        SpringApplication.run(EurekaApplication.class, args);
+        SpringApplication.run(ZuulApplication.class, args);
     }
 
-
     @Bean
-    @Primary
-    @Profile("develop")
+    @Profile({"ap-northeast-2a","ap-northeast-2c"})
     public EurekaInstanceConfigBean eurekaInstanceConfigBean(InetUtils inetUtils){
         EurekaInstanceConfigBean b = new EurekaInstanceConfigBean(inetUtils);
         AmazonInfo info = AmazonInfo.Builder.newBuilder().autoBuild("eureka");
@@ -37,5 +38,5 @@ public class EurekaApplication {
         b.setDataCenterInfo(info);
         return b;
     }
-
 }
+
