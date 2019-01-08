@@ -43,7 +43,8 @@ server:
 
 ---
 spring:
-  profiles: debug
+  profiles:
+    active: debug
   datasource:
     url: jdbc:mysql://localhost/sw?serverTimezone=UTC
     username: root

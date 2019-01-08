@@ -63,7 +63,7 @@ public class subProblemControllerTests {
                         .createdDateAt(localDate)
                         .build();
         //MediaType.APPLICATION_JSON = MediaType.class, APPLICATION_JSON_UTF8_VALUE = String
-        this.mockMvc.perform(post("/api/v1/sub-problem")
+        this.mockMvc.perform(post("/v1/sub-problem")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(problem)))
@@ -123,7 +123,7 @@ public class subProblemControllerTests {
                 .build();
 
         //content must not be null;
-        this.mockMvc.perform(post("/api/v1/sub-problem")
+        this.mockMvc.perform(post("/v1/sub-problem")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(problem)))
@@ -136,7 +136,7 @@ public class subProblemControllerTests {
 
         subProblem problem = new subProblem("a","hello-world");
         //code must be length 6
-        this.mockMvc.perform(post("/api/v1/sub-problem")
+        this.mockMvc.perform(post("/v1/sub-problem")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(objectMapper.writeValueAsString(problem)))
