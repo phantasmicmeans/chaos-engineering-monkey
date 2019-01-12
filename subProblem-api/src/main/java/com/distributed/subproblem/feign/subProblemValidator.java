@@ -14,7 +14,17 @@ public class subProblemValidator {
         if(object instanceof String) {
             String code = (String) Optional.ofNullable(object).orElseThrow(()
                     -> new DataInvalidException("please check your {code} in uri or json data"));
-            return code.length() == 6;
+
+            String message = "length must be 6, please check your {code}";
+
+            if(code.length() < 6) { //code length validation
+                message = "code length is short. " + message;
+            }else if(code.length() > 6) {
+                message = "code length is long. " + message;
+            }else // length equals 6
+                return true;
+
+            throw new DataInvalidException(message);
         }
         else if(object instanceof Integer) {
             Optional.ofNullable(object).orElseThrow(()
@@ -24,7 +34,12 @@ public class subProblemValidator {
         else if(object instanceof subProblem) {
             subProblem subProblem = (subProblem) Optional.ofNullable(object).orElseThrow(()
                     -> new DataInvalidException("please check your json(post) data"));
-            return checkIsEmpty(subProblem.getCode()) && subProblem.getContent() != null;
+
+            if(subProblem.getContent() == null) {
+                throw new DataInvalidException("content must not be null");
+            }
+
+            return checkIsEmpty(subProblem.getCode());
         }
         return false;
     }
