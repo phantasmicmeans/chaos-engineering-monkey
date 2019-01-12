@@ -1,7 +1,6 @@
 package com.distributed.subproblem.feign;
 
 import com.distributed.subproblem.domain.subProblem;
-import com.distributed.subproblem.exception.DataInvalidException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHeaders;
 import org.junit.Before;
@@ -74,40 +73,51 @@ public class subProblemControllerTests {
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
-    /*
+
     @Test //id로 조회하기
     public void getSubProblemById() throws Exception{
 
-        this.mockMvc.perform(get("/api/v1/sub-problem/{id}",1))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("code").exists())
-                .andExpect(jsonPath("content").exists())
-                .andExpect(jsonPath("count").exists())
-                .andExpect(jsonPath("createdTimeAt").exists())
-                .andExpect(jsonPath("createdDateAt").exists())
-                .andExpect(status().isOk());
-    }
-
-
-    @Test
-    public void getSubProblemByCode() throws Exception{
-
-        this.mockMvc.perform(get("/api/v1/sub-problems/abcdef"))
-                .andDo(print())
+        subProblem sProblem = generateCreation("abcdef");
+        this.mockMvc.perform(get("/v1/sub-problem/{id}",sProblem.getId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("code").exists())
-                .andExpect(jsonPath("content").exists())
-                .andExpect(jsonPath("count").exists())
-                .andExpect(jsonPath("createdTimeAt").exists())
-                .andExpect(jsonPath("createdDateAt").exists());
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.pro_hash").exists())
+                .andExpect(jsonPath("$.code").exists())
+                .andExpect(jsonPath("$.content").exists())
+                .andExpect(jsonPath("$.count").exists())
+                .andExpect(jsonPath("$.createdTimeAt").exists())
+                .andExpect(jsonPath("$.createdDateAt").exists());
+    }
+
+    @Test //id가 없는 경우 조회, 404
+    public void getSubProblem404() throws Exception {
+
+        this.mockMvc.perform(get("/v1/sub-problem/{id}", 12334))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test //code가 없는 경우 조회, 404
+    public void getSubProblemByCode404() throws Exception{
+
+        String code = "abcdeg";
+        this.mockMvc.perform(get("v1/sub-problems/{code}", code))
+                .andExpect(status().isNotFound());
 
     }
 
-*/
-    @Test //data null or wrong
+    @Test //code length 6이 아닌 경우 조회하기, 400
+    public void getSubProblemByCode400() throws Exception {
+
+        String code = "ab";
+        String mustResponse = "code length is short. length must be 6, please check your {code}";
+
+        this.mockMvc.perform(get("/v1/sub-problem/list/{code}", code))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(mustResponse));
+
+    }
+
+    @Test //content가 null인 경우, 400 & error message
     public void createSubProblemFail() throws Exception {
 
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -123,25 +133,48 @@ public class subProblemControllerTests {
                 .build();
 
         //content must not be null;
+        String mustResponse = "content must not be null";
         this.mockMvc.perform(post("/v1/sub-problem")
                         .accept(MediaType.APPLICATION_JSON_UTF8)
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .content(objectMapper.writeValueAsString(problem)))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(mustResponse))
+                .andReturn();
+
     }
 
-    @Test //code data invalid, code length must > 3 && not null
+    @Test //code data invalid, code length must == 6 , 400 & error message
     public void createSubProblemFailWithCode() throws Exception {
 
         subProblem problem = new subProblem("a","hello-world");
         //code must be length 6
+        String mustResponse = "code length is short. length must be 6, please check your {code}";
+
         this.mockMvc.perform(post("/v1/sub-problem")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(objectMapper.writeValueAsString(problem)))
                 .andDo(print())
-                .andExpect(status().is(400));
+                .andExpect(status().is(400))
+                .andExpect(jsonPath("$.message").value(mustResponse))
+                .andReturn();
+
+    }
+
+    private subProblem generateCreation(String code) {
+
+        subProblem sProblem = subProblem.builder()
+                .code(code)
+                .pro_hash(String.valueOf(code.hashCode()))
+                .content("hello-world")
+                .count(0)
+                .createdTimeAt(LocalDateTime.now())
+                .createdDateAt(LocalDate.now())
+                .build();
+
+        return (subProblem)this.subProblemService.saveSubProblem(sProblem);
     }
 }
 
