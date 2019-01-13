@@ -7,12 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -47,11 +47,21 @@ public class subProblemController implements subProblemClient{
 
         logger.info("getSubProblemByCode(String code)");
         this.subProblemValidator.checkIsEmpty(code);
-        List<subProblem> subProblems = subProblemService.loadSubProblemByCode(code);
-        if(subProblems.isEmpty()) throw new ResourceNotFoundException("cannot found sub-problems with that code");
+        Optional maybeSubProblems = subProblemService.loadSubProblemByCode(code);
+        this.subProblemValidator.checkIsEmpty(maybeSubProblems.get());
         logger.info("getSubProblemByCode return");
 
-        return ResponseEntity.ok(subProblems);
+        return ResponseEntity.ok(maybeSubProblems.get());
+    }
+
+    @Override
+    public ResponseEntity getSubProblemByCodePaging(String code, Pageable pageable) {
+
+        List<subProblem> pageSubProblems = subProblemService.loadSubProblemBycodePaging(code, pageable);
+        this.subProblemValidator.checkIsEmpty(pageSubProblems);
+        logger.info("size from controller : " + pageSubProblems.size());
+
+        return ResponseEntity.ok(pageSubProblems);
     }
 
     @Override
