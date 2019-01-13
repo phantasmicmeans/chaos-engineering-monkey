@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -96,22 +97,35 @@ public class subProblemControllerTests {
                 .andExpect(status().isNotFound());
     }
 
-    @Test //code가 없는 경우 조회, 404
+    @Test //code에 해당하는 데이터가 없는 경우 조회, 404
     public void getSubProblemByCode404() throws Exception{
 
         String code = "abcdeg";
-        this.mockMvc.perform(get("v1/sub-problems/{code}", code))
+        this.mockMvc.perform(get("v1/sub-problem/list/{code}/all", code))
                 .andExpect(status().isNotFound());
 
     }
 
-    @Test //code length 6이 아닌 경우 조회하기, 400
+    @Test //code로 리스트를 조회, 페이징
+    public void getSubProblemsByCodePaging() throws Exception {
+
+        String code = "abcdef";
+        IntStream.range(0,10).forEach( idx -> this.generateCreation(code) );
+
+        this.mockMvc.perform(get("/v1/sub-problem/list/{code}", code)
+                .param("page","1")
+                .param("size","5"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test //code length 6이 아닌 경우 전체 조회하기, 400
     public void getSubProblemByCode400() throws Exception {
 
         String code = "ab";
         String mustResponse = "code length is short. length must be 6, please check your {code}";
 
-        this.mockMvc.perform(get("/v1/sub-problem/list/{code}", code))
+        this.mockMvc.perform(get("/v1/sub-problem/list/{code}/all", code))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value(mustResponse));
 
