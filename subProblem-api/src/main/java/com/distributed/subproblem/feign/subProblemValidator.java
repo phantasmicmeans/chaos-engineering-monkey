@@ -2,8 +2,10 @@ package com.distributed.subproblem.feign;
 
 import com.distributed.subproblem.domain.subProblem;
 import com.distributed.subproblem.exception.DataInvalidException;
+import com.distributed.subproblem.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -35,11 +37,16 @@ public class subProblemValidator {
             subProblem subProblem = (subProblem) Optional.ofNullable(object).orElseThrow(()
                     -> new DataInvalidException("please check your json(post) data"));
 
-            if(subProblem.getContent() == null) {
+            if(subProblem.getContent() == null)
                 throw new DataInvalidException("content must not be null");
-            }
 
             return checkIsEmpty(subProblem.getCode());
+        }
+        else if(object instanceof List) {
+            if(((List) object).isEmpty() || ((List) object).size() == 0)
+                throw new ResourceNotFoundException("cannot found sub-problem list with that code");
+
+            return true;
         }
         return false;
     }
