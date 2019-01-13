@@ -14,7 +14,18 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(DataInvalidException.class)
     ResponseEntity<ErrorResponse> handleDataInvalidException(DataInvalidException re){
 
-        ErrorResponse errorResponse = new ErrorResponse(new Date(), re.getMessage());
+        ErrorResponse errorResponse = this.getErrorResponse(re);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(ResourceNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException re){
+
+        ErrorResponse errorResponse = this.getErrorResponse(re);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    private ErrorResponse getErrorResponse(Exception e){
+        return new ErrorResponse(new Date(), e.getMessage());
     }
 }
