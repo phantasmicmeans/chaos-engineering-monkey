@@ -26,6 +26,9 @@ public class ClientController {
     @Autowired
     private EurekaClient discoveryClient;
 
+    @Autowired
+    private EurekaValidator eurekaValidator;
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "regions/clients", method = GET) //eureka server에 등록된 regions
@@ -34,7 +37,7 @@ public class ClientController {
         TreeSet<String> regions = new TreeSet<>(discoveryClient.getAllKnownRegions());
         StringBuilder sb = new StringBuilder();
 
-        if (checkEmpty(regions)) throw new NotFoundException("No Regions");
+        if (eurekaValidator.checkEmpty(regions)) throw new NotFoundException("No Regions");
         regions.forEach(sb::append);
         return sb.toString();
     }
@@ -42,7 +45,7 @@ public class ClientController {
     @RequestMapping(value = "clients/applications/{applicationName}", method = GET)
     public String getApplications(@Valid @PathVariable("applicationName") String applicationName) {
 
-        if (checkPathVariable(applicationName)) throw new ValidationException("Please Check your applicationName");
+        if (eurekaValidator.checkPathVariable(applicationName)) throw new ValidationException("Please Check your applicationName");
 
         Application application = discoveryClient.getApplication(applicationName);
         return application.getName().isEmpty() ? "cannot found application" : application.getName();
@@ -58,13 +61,4 @@ public class ClientController {
 
         return sb.toString();
     }
-
-    private boolean checkEmpty(Set regions) {
-        return regions.isEmpty();
-    }
-
-    private boolean checkPathVariable(String str) {
-        return (str.isEmpty() || str.length() < 3);
-    }
-
 }

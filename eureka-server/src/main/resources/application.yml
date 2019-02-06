@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active: debug
   application:
     name: eureka-server
 
@@ -9,6 +7,12 @@ server:
 #Standalone Mode - The combination of the two caches (client and server) and the hearbeats make a standalone Eurkea server fairly resilent to failure,
 # as long as there is some sort of monitor or elastic runtime keeping it alive.
 #In standalone mode, you might prefer to switch off the client side behavior so that it does not keep trying and failing to reach its peers...
+
+---
+spring:
+  profiles:
+    active: debug
+
 eureka:
   instance:
     hostname: localhost
@@ -17,10 +21,7 @@ eureka:
   client:
     register-with-eureka: false #client can register to eureka server
     service-url:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-    #region: ap-northeast-2
-    #availability-zones:
-    #  ap-northeaset-2: ap-northeast-2c
+      defaultZone: http://localhost:8081/eureka/
 
 #The Eureka Server does not have a back end store, but the service instancse in the registry all have to send hearbeats
 #to keep their registrations up to date( so this can bo done in memory)
@@ -31,12 +32,7 @@ eureka:
 
 ---
 spring:
-  profiles:
-  application:
-    name: eureka-server
-
-server:
-  port: 8081
+  profiles: aws-eureka
 #Standalone Mode - The combination of the two caches (client and server) and the hearbeats make a standalone Eurkea server fairly resilent to failure,
 # as long as there is some sort of monitor or elastic runtime keeping it alive.
 #In standalone mode, you might prefer to switch off the client side behavior so that it does not keep trying and failing to reach its peers...
